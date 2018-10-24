@@ -1,5 +1,6 @@
 require 'openssl'
 require 'socket'                 # Get sockets from stdlib
+require 'pry'
 
 server = TCPServer.open(2000)
 
@@ -8,15 +9,14 @@ loop {                           # Servers run forever
    client = server.accept        # Wait for a client to connect
    message = "lalala"
 
-   cipher = OpenSSL::Cipher::AES.new(128, :CBC)
+   cipher = OpenSSL::Cipher::AES256.new :CBC
    cipher.encrypt
-   key = 'abcd'
-   iv = '08F33A959938C56E518F9239EDB4D801'
+   key = 'ThisPasswordIsReallyHardToGuess!'
+   iv = cipher.random_iv
 
    cipher.key = key
    encrypted = cipher.update(message) + cipher.final
-   client.puts(encrypted + "\n")   # Send the time to the client
-   client.puts(key)
-   client.puts "Closing the connection. Bye!"
+   client.puts(encrypted)   # Send the time to the client
+   client.puts(iv)
    client.close                  # Disconnect from the client
 }
