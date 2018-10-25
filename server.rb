@@ -13,11 +13,12 @@ class Server
      cipher = OpenSSL::Cipher::AES256.new :CBC
      cipher.encrypt
      key = 'ThisPasswordIsReallyHardToGuess!'
+
      iv = cipher.random_iv
-     File.open('iv', 'w') { |file| file.write(iv) }
      cipher.key = key
+     
      encrypted = cipher.update(message) + cipher.final
-     tosend2 = encrypted + "," + iv 
+     tosend2 = encrypted + "," + iv
      client.puts(tosend2)
      client.close                  # Disconnect from the client
   }
