@@ -1,6 +1,7 @@
 require 'openssl'
 require 'socket'                 # Get sockets from stdlib
 require 'pry'
+class Server
 
   server = TCPServer.open(8044)
 
@@ -16,6 +17,9 @@ require 'pry'
      File.open('iv', 'w') { |file| file.write(iv) }
      cipher.key = key
      encrypted = cipher.update(message) + cipher.final
-     client.puts(encrypted)   # Send the time to the client
+     tosend2 = encrypted + "," + iv 
+     client.puts(tosend2)
      client.close                  # Disconnect from the client
   }
+
+end
