@@ -3,7 +3,7 @@ require 'socket'
 require 'pry'        # Sockets are in standard library
 
 hostname = 'localhost'
-port = 2000
+port = 5044
 
 s = TCPSocket.open(hostname, port)
 

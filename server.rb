@@ -2,7 +2,7 @@ require 'openssl'
 require 'socket'                 # Get sockets from stdlib
 require 'pry'
 
-  server = TCPServer.open(2000)
+  server = TCPServer.open(8044)
 
      # Socket to listen on port 2000
   loop {                           # Servers run forever
