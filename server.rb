@@ -3,24 +3,37 @@ require 'socket'                 # Get sockets from stdlib
 require 'pry'
 class Server
 
-  server = TCPServer.open(8044)
+  server = TCPServer.open(8038)
+  hostname = 'localhost'
+  #wysyłam  wiadomość1
+  #muszę tutaj wysłać wiadomość z podstawą i generatorem
 
-     # Socket to listen on port 2000
-  loop {                           # Servers run forever
-     client = server.accept        # Wait for a client to connect
-     message = "lalala"
+  prime = 23
+  generator = 5
+  a = 6
+  properS = 2
+  numberA= (generator**a) % prime
 
-     cipher = OpenSSL::Cipher::AES256.new :CBC
-     cipher.encrypt
-     key = 'ThisPasswordIsReallyHardToGuess!'
+  client = server.accept
+  message1 = numberA
+  client.puts(message1)
 
-     iv = cipher.random_iv
-     cipher.key = key
-     
-     encrypted = cipher.update(message) + cipher.final
-     tosend2 = encrypted + "," + iv
-     client.puts(tosend2)
-     client.close                  # Disconnect from the client
-  }
+  client.close
+  ####odbieram  wiadomoś2
+  port2=8039
+  s = TCPSocket.open(hostname, port2)
+  line = s.gets     # Read lines from the socket
+  message2 =  line.chop
+  puts message2
+  number2 = message2.to_i
+  probableNumber = (number2**a) % prime
+
+  if probableNumber == properS
+    puts "ok"
+  else
+    puts "not ok"
+  end  
+
+  s.close
 
 end

@@ -4,24 +4,36 @@ require 'pry'        # Sockets are in standard library
 class Client
 
   hostname = 'localhost'
-  port = 8044
+  port1 = 8038
+  properS = 2
+  #odbieram wiadomość
+  client = TCPSocket.open(hostname, port1)
+  line = client.gets     # Read lines from the socket
+  message1 =  line.chop
+  numberA = message1.to_i
+  generator  = 5
+  prime = 23
+  b= 15
+  numberB = (generator**b) % prime
 
-  s = TCPSocket.open(hostname, port)
+  client.close
+  ####wysyłam wiadomość 2
+  server = TCPServer.open(8039)
+  server = server.accept
+  message2 =  numberB
+  probableNumber = (numberA**b) % prime
 
-  key = 'ThisPasswordIsReallyHardToGuess!'
-  decipher = OpenSSL::Cipher::AES256.new :CBC
-  while line = s.gets     # Read lines from the socket
-     encrypted =  line.chop
-     messageWithIv = encrypted.split(',', 2)
-     messages = messageWithIv[0]
-     iv = messageWithIv[1]
+  ### sprawdzam czy takie same
 
-     decipher.key = key
-     decipher.iv = iv
-     plain = decipher.update(messages) + decipher.final   # And print with platform line terminator
-     puts plain
-     puts messages
+  if probableNumber == properS
+    server.puts(message2)
+    puts "ok"
+  else
+    puts "ok"
   end
-  s.close
+
+  server.close
+
+
 
 end
